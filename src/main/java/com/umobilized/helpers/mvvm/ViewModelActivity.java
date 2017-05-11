@@ -34,6 +34,7 @@ public abstract class ViewModelActivity<T extends ViewModel> extends HelperActiv
         super.onDestroy();
         if (mViewModel != null) {
             mViewModel.onDestroy();
+            mViewModel = null;
         }
     }
 
