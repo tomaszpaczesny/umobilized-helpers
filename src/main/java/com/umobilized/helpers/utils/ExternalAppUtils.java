@@ -112,6 +112,24 @@ public class ExternalAppUtils {
     }
 
     /**
+     * Opens dialer
+     * @param context
+     * @param number
+     * @return
+     */
+    public static boolean externalDialNumber(Context context, String number) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:"+number));
+
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
+            context.startActivity(intent);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Opens video by URI in external activity.
      * @param videoUri
      *  @return true if activity started
