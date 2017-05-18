@@ -3,6 +3,7 @@ package com.umobilized.helpers.utils;
 import android.databinding.BindingAdapter;
 import android.graphics.Typeface;
 import android.text.Html;
+import android.widget.EditText;
 import android.widget.TextView;
 
 /**
@@ -16,6 +17,11 @@ public class BindingUtils {
         if (html != null) {
             textView.setText(Html.fromHtml(html));
         }
+    }
+
+    @BindingAdapter("bind:onAction")
+    public static void setOnEditorActionListener(EditText editText, TextView.OnEditorActionListener listener) {
+        editText.setOnEditorActionListener(listener);
     }
 
     @BindingAdapter("bind:typeface")

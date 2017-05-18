@@ -3,6 +3,7 @@ package com.umobilized.helpers.app;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 import com.umobilized.helpers.PermissionsSet;
 
@@ -60,6 +61,13 @@ public abstract class HelperFragment extends Fragment {
         Context context = getContext();
         if (context != null && context instanceof HelperActivity) {
             ((HelperActivity) context).hideSoftKeyboard();
+        }
+    }
+
+    public void showSoftKeyboard(View consumer) {
+        Context context = getContext();
+        if (context != null && context instanceof HelperActivity) {
+            ((HelperActivity) context).showSoftKeyboard(consumer);
         }
     }
 

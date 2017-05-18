@@ -205,6 +205,28 @@ public abstract class HelperActivity extends AppCompatActivity {
     }
 
     /**
+     * Shows soft keyboard
+     */
+    public void showSoftKeyboard(View consumer) {
+        if (consumer != null) {
+            consumer.requestFocus();
+
+            // FIXME: bit of a hack; showSoftInput must be called once consumer isActive;
+            Handler handler = new Handler(getMainLooper());
+            handler.postDelayed(() -> {
+                InputMethodManager imm1 = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm1.showSoftInput(consumer, InputMethodManager.SHOW_IMPLICIT);
+            }, 100);
+
+        } else {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+        }
+    }
+
+
+
+    /**
      * Clears current focus and hides soft keyboard if needed.
      */
     public void finishEditing() {
