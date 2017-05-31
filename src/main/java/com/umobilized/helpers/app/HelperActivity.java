@@ -120,6 +120,12 @@ public abstract class HelperActivity extends AppCompatActivity {
     }
 
 
+    public void removeOnActivityResultClient(OnActivityResultClient client) {
+        if (mActivityResultClients != null) {
+            mActivityResultClients.remove(client);
+        }
+    }
+
     /**
      * Requests permission for all missing permission from the provided permissions list.
      *

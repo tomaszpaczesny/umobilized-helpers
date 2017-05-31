@@ -40,6 +40,13 @@ public abstract class HelperFragment extends Fragment {
         }
     }
 
+    public void removeOnActivityResultClient(HelperActivity.OnActivityResultClient client) {
+        Activity activity = getActivity();
+        if (activity != null && activity instanceof HelperActivity) {
+            ((HelperActivity) activity).removeOnActivityResultClient(client);
+        }
+    }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
