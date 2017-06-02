@@ -113,8 +113,9 @@ public class FileUtils {
     private static File getCacheDir(Context context) {
         File cacheDir;
 
+
         File[] externalCacheDirs = ContextCompat.getExternalCacheDirs(context);
-        if (externalCacheDirs != null && externalCacheDirs.length > 0) {
+        if (externalCacheDirs != null && externalCacheDirs.length > 0 && externalCacheDirs[0] != null) {
             cacheDir = externalCacheDirs[0];
         } else {
             cacheDir = context.getCacheDir();
