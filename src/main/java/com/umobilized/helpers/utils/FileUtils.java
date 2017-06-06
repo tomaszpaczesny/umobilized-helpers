@@ -12,6 +12,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by tpaczesny on 2016-11-29.
@@ -108,6 +111,33 @@ public class FileUtils {
         for (File file : files) {
             file.delete();
         }
+    }
+
+    /**
+     * Based on:
+     * https://developer.android.com/training/camera/photobasics.html
+     *
+     * @param context
+     * @return
+     * @throws IOException
+     */
+    public static File createImageFile(Context context, boolean inPublicDir) throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir;
+        if (inPublicDir) {
+            storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        } else {
+            storageDir = getCacheDir(context);
+        }
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        return image;
     }
 
     private static File getCacheDir(Context context) {

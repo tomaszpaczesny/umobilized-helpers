@@ -10,7 +10,7 @@ import android.os.Build;
  */
 
 public enum PermissionsSet {
-    MEDIA_CAPTURE, AUDIO_CAPTURE, LOCATION, SAVE_TO_GALLERY, CONTACTS, ACCESS_GALLERY;
+    MEDIA_CAPTURE, AUDIO_CAPTURE, LOCATION, SAVE_TO_GALLERY, TAKE_PICTURE, CONTACTS, ACCESS_GALLERY;
 
     public String[] toPermissionsArray() {
         switch (this) {
@@ -21,6 +21,8 @@ public enum PermissionsSet {
             case LOCATION:
                 return new String[] {Manifest.permission.ACCESS_FINE_LOCATION};
             case SAVE_TO_GALLERY:
+                return new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            case TAKE_PICTURE:
                 return new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE};
             case ACCESS_GALLERY:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {

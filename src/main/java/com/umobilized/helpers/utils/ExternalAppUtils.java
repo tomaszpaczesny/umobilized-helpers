@@ -5,7 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.provider.Telephony;
+import android.support.v4.content.FileProvider;
+
+import java.io.File;
 
 /**
  * Created by tpaczesny on 2017-03-20.
@@ -146,6 +150,30 @@ public class ExternalAppUtils {
         }
     }
 
+    /**
+     * Takes picture and stores in the provided file.
+     * @param activity
+     * @param fileProvider authority so file can be access by other apps ( https://developer.android.com/training/camera/photobasics.html )
+     * @param outputFile file to save to
+     * @param requestCode
+     * @return
+     */
+    public static boolean externalTakePicture(Activity activity, String fileProvider, File outputFile, int requestCode) {
+        if (outputFile == null) {
+            throw new IllegalArgumentException("Output file is null");
+        }
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if (intent.resolveActivity(activity.getPackageManager()) != null) {
+            Uri photoURI = FileProvider.getUriForFile(activity, fileProvider, outputFile);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+            activity.startActivityForResult(intent, requestCode);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * Generic class opening any intent, checking first if it can be resolved.
