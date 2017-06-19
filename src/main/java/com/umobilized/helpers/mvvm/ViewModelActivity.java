@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import com.umobilized.helpers.app.HelperActivity;
 
 /**
+ * Stores ViewModel as a field and calls callback methods on it.
+ *
  * Created by tpaczesny on 2017-05-11.
  */
 

@@ -24,7 +24,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 
-/** Helper class to manage shared preferences-based storage for serializing simple objects using JSON
+/**
+ * Helper class to manage shared preferences-based storage for serializing simple objects using JSON
  * or objects serialization
  *
  * Created by tpaczesny on 2016-11-24.
