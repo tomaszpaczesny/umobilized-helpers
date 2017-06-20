@@ -2,6 +2,7 @@ package com.umobilized.helpers.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Build;
 import android.view.View;
 import android.view.Window;
@@ -12,6 +13,20 @@ import android.view.WindowManager;
  */
 
 public class StatusBarHelper {
+
+    /**
+     * Returns device-specific pixel size of status bar.
+     * @param resources
+     * @return
+     */
+    public static int getStatusBarHeight(Resources resources) {
+        int result = 0;
+        int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = resources.getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
 
     /**
      * Method to set light colors as status background (where dark status bar text is needed).
