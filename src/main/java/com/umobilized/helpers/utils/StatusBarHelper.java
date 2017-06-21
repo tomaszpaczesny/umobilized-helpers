@@ -37,22 +37,21 @@ public class StatusBarHelper {
      */
     public static void setLightStatusBarColor(View view, int color, int fallbackColor) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            setStatusBarColor(view, color);
+            setStatusBarColor(view.getContext(), color);
             setLightStatusBar(view);
         } else {
-            setStatusBarColor(view, fallbackColor);
+            setStatusBarColor(view.getContext(), fallbackColor);
         }
     }
 
     /**
      * If device is Android 5.0+ sets the request color as status bar background
-     * @param view
+     * @param context
      * @param color
      */
 
-    public static void setStatusBarColor(View view, int color) {
+    public static void setStatusBarColor(Context context, int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Context context = view.getContext();
             if (context instanceof Activity) {
                 Window window = ((Activity)context).getWindow();
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);

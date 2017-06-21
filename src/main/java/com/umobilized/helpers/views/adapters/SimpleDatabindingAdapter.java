@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,8 +18,8 @@ import java.util.List;
 public class SimpleDatabindingAdapter<T> extends RecyclerView.Adapter<DatabindingViewHolder> {
 
     protected final List<T> mData;
-    private final int mItemRedId;
-    private final int mViewModelVarId;
+    protected final int mItemResId;
+    protected final int mViewModelVarId;
 
 
     /**
@@ -27,8 +28,8 @@ public class SimpleDatabindingAdapter<T> extends RecyclerView.Adapter<Databindin
      * @param initialData
      */
     public SimpleDatabindingAdapter(List<T> initialData) {
-        mData = initialData;
-        mItemRedId = -1;
+        mData = initialData != null ? initialData : new ArrayList<>();
+        mItemResId = -1;
         mViewModelVarId = -1;
     }
 
@@ -39,8 +40,8 @@ public class SimpleDatabindingAdapter<T> extends RecyclerView.Adapter<Databindin
      * @param viewModelBindingVariableId
      */
     public SimpleDatabindingAdapter(List<T> initialData, int itemResId, int viewModelBindingVariableId) {
-        mData = initialData;
-        mItemRedId = itemResId;
+        mData = initialData != null ? initialData : new ArrayList<>();
+        mItemResId = itemResId;
         mViewModelVarId = viewModelBindingVariableId;
     }
 
@@ -67,11 +68,11 @@ public class SimpleDatabindingAdapter<T> extends RecyclerView.Adapter<Databindin
 
     @Override
     public DatabindingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (mItemRedId == -1) {
+        if (mItemResId == -1) {
             throw new IllegalStateException("onCreteViewHolder must be overriden or itemResId provided");
         }
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ViewDataBinding binding = DataBindingUtil.inflate(inflater, mItemRedId, parent, false);
+        ViewDataBinding binding = DataBindingUtil.inflate(inflater, mItemResId, parent, false);
 
         return new DatabindingViewHolder(binding);
     }
