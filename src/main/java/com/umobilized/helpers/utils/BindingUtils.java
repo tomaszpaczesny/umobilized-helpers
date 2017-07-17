@@ -12,19 +12,19 @@ import android.widget.TextView;
 
 public class BindingUtils {
 
-    @BindingAdapter("bind:textHtml")
+    @BindingAdapter("textHtml")
     public static void setTextHtml(TextView textView, String html) {
         if (html != null) {
             textView.setText(Html.fromHtml(html));
         }
     }
 
-    @BindingAdapter("bind:onAction")
+    @BindingAdapter("onAction")
     public static void setOnEditorActionListener(EditText editText, TextView.OnEditorActionListener listener) {
         editText.setOnEditorActionListener(listener);
     }
 
-    @BindingAdapter("bind:typeface")
+    @BindingAdapter("typeface")
     public static void setTypeface(TextView textView, String typefaceName) {
         if (typefaceName != null) {
             Typeface typeface = FontsHelper.getFont(typefaceName);

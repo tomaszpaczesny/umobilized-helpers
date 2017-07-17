@@ -15,7 +15,7 @@ import android.view.ContextMenu;
 public class ContextMenuCardView extends CardView implements ContextMenu.ContextMenuInfo, ContextMenuInfoHolder{
     private Object mMenuInfo;
 
-    @BindingAdapter("bind:menuInfo")
+    @BindingAdapter("menuInfo")
     public static void setMenuInfoBinding(ContextMenuCardView layout, Object menuInfo) {
         layout.setMenuInfo(menuInfo);
     }

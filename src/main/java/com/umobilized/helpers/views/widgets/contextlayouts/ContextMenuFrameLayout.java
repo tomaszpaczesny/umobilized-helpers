@@ -15,7 +15,7 @@ import android.widget.FrameLayout;
 public class ContextMenuFrameLayout extends FrameLayout implements ContextMenu.ContextMenuInfo, ContextMenuInfoHolder{
     private Object mMenuInfo;
 
-    @BindingAdapter("bind:menuInfo")
+    @BindingAdapter("menuInfo")
     public static void setMenuInfoBinding(ContextMenuFrameLayout layout, Object menuInfo) {
         layout.setMenuInfo(menuInfo);
     }

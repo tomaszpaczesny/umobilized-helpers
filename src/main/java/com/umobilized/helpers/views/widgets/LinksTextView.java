@@ -29,7 +29,7 @@ public class LinksTextView extends EllipsizeTextView {
     protected final ArrayList<String> mLinks = new ArrayList<>();
     private LinkDrawer mCustomDrawer;
 
-    @BindingAdapter("bind:onLinkClicked")
+    @BindingAdapter("onLinkClicked")
     public static void bindSetOnLinkClickedListener(LinksTextView linksTextView, LinksTextView.OnTextLinkClickedListener listener) {
         linksTextView.setOnLinkClickedListener(listener);
     }

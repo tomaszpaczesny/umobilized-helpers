@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 public class ContextMenuLinearLayout extends LinearLayout implements ContextMenu.ContextMenuInfo, ContextMenuInfoHolder{
     private Object mMenuInfo;
 
-    @BindingAdapter("bind:menuInfo")
+    @BindingAdapter("menuInfo")
     public static void setMenuInfoBinding(ContextMenuLinearLayout layout, Object menuInfo) {
         layout.setMenuInfo(menuInfo);
     }
