@@ -150,6 +150,7 @@ public class ExternalAppUtils {
         }
     }
 
+
     /**
      * Takes picture and stores in the provided file.
      * @param activity
@@ -169,6 +170,32 @@ public class ExternalAppUtils {
             Uri photoURI = FileProvider.getUriForFile(activity, fileProvider, outputFile);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
             activity.startActivityForResult(intent, requestCode);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Opens map application at given lat/long and optionally passes a search query
+     * @param context
+     * @param latitude use null if only using query for searching
+     * @param longitude use null if only using query for searching
+     * @param query optional, may be null
+     */
+    public static boolean externalMap(Context context, Double latitude, Double longitude, String query) {
+        String uriStr = String.format("geo:%s,%s", latitude != null ? latitude : 0, longitude != null ? longitude : 0);
+
+        if (query != null) {
+            uriStr += "?q=" + Uri.encode(query);
+        }
+
+        Uri gmmIntentUri = Uri.parse(uriStr);
+        Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        intent.setPackage("com.google.android.apps.maps");
+
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
+            context.startActivity(intent);
             return true;
         } else {
             return false;
@@ -203,5 +230,6 @@ public class ExternalAppUtils {
             return externalUrl(activity, "https://play.google.com/store/apps/details?id=" + packageName);
         }
     }
+
 
 }
