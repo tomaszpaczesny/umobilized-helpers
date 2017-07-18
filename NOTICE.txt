@@ -1,5 +1,4 @@
 UMobilized Android Helpers
 Copyright 2017 Tomasz Paczesny
 
-This product includes software developed at
 
