@@ -96,6 +96,15 @@ public class FileUtils {
         return new File(subDirectory, fileName);
     }
 
+    public static File getInternalCacheFile(Context context, String subDirectoryName, String fileName) {
+        File cacheDir = context.getCacheDir();
+
+        File subDirectory = new File(cacheDir, subDirectoryName);
+        subDirectory.mkdir(); // creates if needed
+
+        return new File(subDirectory, fileName);
+    }
+
     public static File[] getAllCacheFiles(Context context, String subDirectoryName) {
         File cacheDir = getCacheDir(context);
         File subDirectory = new File(cacheDir, subDirectoryName);
