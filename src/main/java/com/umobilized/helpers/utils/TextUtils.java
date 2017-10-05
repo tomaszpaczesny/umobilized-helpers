@@ -23,6 +23,15 @@ public class TextUtils {
         return str != null && !str.isEmpty();
     }
 
+    public static boolean hasInteger(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     /**
      * Convert CharSequence into a Spannable with a given color.
      * Useful to pass color where custom styles are not permitted (e.g. menus)
@@ -143,5 +152,6 @@ public class TextUtils {
             }
         };
     }
+
 
 }
