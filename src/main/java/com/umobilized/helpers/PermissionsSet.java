@@ -10,12 +10,14 @@ import android.os.Build;
  */
 
 public enum PermissionsSet {
-    MEDIA_CAPTURE, AUDIO_CAPTURE, LOCATION, SAVE_TO_GALLERY, TAKE_PICTURE, CONTACTS, ACCESS_GALLERY;
+    MEDIA_CAPTURE, CAMERA, AUDIO_CAPTURE, LOCATION, SAVE_TO_GALLERY, TAKE_PICTURE, CONTACTS, ACCESS_GALLERY;
 
     public String[] toPermissionsArray() {
         switch (this) {
             case MEDIA_CAPTURE:
                 return new String[] {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            case CAMERA:
+                return new String[] {Manifest.permission.CAMERA};
             case AUDIO_CAPTURE:
                 return new String[] {Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE};
             case LOCATION:
