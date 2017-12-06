@@ -34,8 +34,8 @@ public class ObjectStore {
      * @param handle
      * @return
      */
-    public static Object get(long handle) {
-        Object object = mArgumentsStore.get(handle);
+    public static <T> T get(long handle) {
+        T object = (T) mArgumentsStore.get(handle);
         if (object != null) {
             // move once-read object to weak store, so can be accessed as long as originating data source exists
             mWeakArgumentsStore.put(handle, new WeakReference<>(object));
@@ -48,7 +48,7 @@ public class ObjectStore {
 
             WeakReference<Object> ref = mWeakArgumentsStore.get(handle);
             if (ref != null) {
-                return ref.get();
+                return (T) ref.get();
             }
         }
 
