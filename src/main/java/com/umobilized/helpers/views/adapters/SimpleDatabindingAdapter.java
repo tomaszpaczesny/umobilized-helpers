@@ -3,6 +3,7 @@ package com.umobilized.helpers.views.adapters;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -20,7 +21,7 @@ public class SimpleDatabindingAdapter<T> extends RecyclerView.Adapter<Databindin
     protected final List<T> mData;
     protected final int mItemResId;
     protected final int mViewModelVarId;
-
+    private Pair<Integer,Object>[] mGlobalObjects;
 
     /**
      * Constructor providing initial data only. Uset his constructor only when extending this class.
@@ -31,6 +32,7 @@ public class SimpleDatabindingAdapter<T> extends RecyclerView.Adapter<Databindin
         mData = initialData != null ? initialData : new ArrayList<>();
         mItemResId = -1;
         mViewModelVarId = -1;
+        mGlobalObjects = null;
     }
 
     /**
@@ -39,10 +41,11 @@ public class SimpleDatabindingAdapter<T> extends RecyclerView.Adapter<Databindin
      * @param itemResId
      * @param viewModelBindingVariableId
      */
-    public SimpleDatabindingAdapter(List<T> initialData, int itemResId, int viewModelBindingVariableId) {
+    public SimpleDatabindingAdapter(List<T> initialData, int itemResId, int viewModelBindingVariableId, Pair<Integer,Object>... globalObjects) {
         mData = initialData != null ? initialData : new ArrayList<>();
         mItemResId = itemResId;
         mViewModelVarId = viewModelBindingVariableId;
+        mGlobalObjects = globalObjects;
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -59,6 +62,11 @@ public class SimpleDatabindingAdapter<T> extends RecyclerView.Adapter<Databindin
     public void setData(List<T> data) {
         mData.clear();
         mData.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    public void setGlobalObjects(Pair<Integer,Object>... globalObjects) {
+        mGlobalObjects = globalObjects;
         notifyDataSetChanged();
     }
 
@@ -84,6 +92,14 @@ public class SimpleDatabindingAdapter<T> extends RecyclerView.Adapter<Databindin
         }
         ViewDataBinding binding = holder.getBinding();
         binding.setVariable(mViewModelVarId, getItem(position));
+
+        // bind global objects
+        if (mGlobalObjects != null) {
+            for (Pair<Integer, Object> pair : mGlobalObjects) {
+                binding.setVariable(pair.first, pair.second);
+            }
+        }
+
         binding.executePendingBindings();
     }
 

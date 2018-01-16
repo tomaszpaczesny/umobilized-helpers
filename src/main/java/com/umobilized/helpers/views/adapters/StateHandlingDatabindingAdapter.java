@@ -2,6 +2,7 @@ package com.umobilized.helpers.views.adapters;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -32,8 +33,8 @@ public class StateHandlingDatabindingAdapter<T> extends SimpleDatabindingAdapter
      * @param itemResId
      * @param viewModelBindingVariableId
      */
-    public StateHandlingDatabindingAdapter(List<T> initialData, int itemResId, int viewModelBindingVariableId, int loadingItemResId, int emptyItemResId) {
-        super(initialData, itemResId, viewModelBindingVariableId);
+    public StateHandlingDatabindingAdapter(List<T> initialData, int itemResId, int viewModelBindingVariableId, int loadingItemResId, int emptyItemResId, Pair<Integer,Object>... globalObjects) {
+        super(initialData, itemResId, viewModelBindingVariableId, globalObjects);
         mLoadingItemResId = loadingItemResId;
         mEmptyItemResId = emptyItemResId;
 
