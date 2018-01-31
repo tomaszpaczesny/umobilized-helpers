@@ -52,32 +52,32 @@ public class Storage {
     }
 
     public void storeObjectAsJson(String key, Object object) {
-        getPrefs().edit().putString(key, serialize(object)).apply();
+        getPrefs().edit().putString(key, toJson(object)).apply();
     }
 
-    public Object getObjectFromJson(String key, Class expectedClass) {
-        return deserialize(getPrefs().getString(key, null), expectedClass);
+    public <T> T  getObjectFromJson(String key, Class<T> expectedClass) {
+        return fromJson(getPrefs().getString(key, null), expectedClass);
     }
 
-    public Object getObjectFromJson(String key, Type expectedType) {
-        return deserialize(getPrefs().getString(key, null), expectedType);
+    public <T> T  getObjectFromJson(String key, Type expectedType) {
+        return fromJson(getPrefs().getString(key, null), expectedType);
     }
 
-    private Object deserialize(String string, Class expectedClass) {
+    public <T> T fromJson(String string, Class<T> expectedClass) {
         if (string != null)
             return mGson.fromJson(string,expectedClass);
         else
             return null;
     }
 
-    private Object deserialize(String string, Type expectedType) {
+    public <T> T fromJson(String string, Type expectedType) {
         if (string != null)
             return mGson.fromJson(string,expectedType);
         else
             return null;
     }
 
-    private String serialize(Object object) {
+    public String toJson(Object object) {
         return object != null ? mGson.toJson(object) : null;
     }
 
@@ -97,14 +97,14 @@ public class Storage {
         }
     }
 
-    public Serializable getObjectFromFile(String key) {
+    public <T extends Serializable> T  getObjectFromFile(String key) {
         File file = FileUtils.getCacheFile(mContext, CACHE_SUBDIRECTORY, key);
 
         ObjectInputStream ois = null;
 
         try {
             ois = new ObjectInputStream(new FileInputStream(file));
-            return (Serializable) ois.readObject();
+            return (T) ois.readObject();
         } catch (IOException e) {
             e.printStackTrace();
             return null;
