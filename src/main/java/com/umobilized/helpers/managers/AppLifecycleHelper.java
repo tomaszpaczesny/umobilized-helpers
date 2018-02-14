@@ -24,6 +24,7 @@ public class AppLifecycleHelper implements Application.ActivityLifecycleCallback
     }
 
     private int mActivityCnt;
+    private Activity mForegroundActivity;
     private LinkedHashSet<AppVisibilityListener> mAppVisibilityListeners;
 
     private AppLifecycleHelper() {
@@ -47,6 +48,10 @@ public class AppLifecycleHelper implements Application.ActivityLifecycleCallback
         return mActivityCnt > 0;
     }
 
+    public Activity getForegroundActivity() {
+        return mForegroundActivity;
+    }
+
     @Override
     public void onActivityCreated(Activity activity, Bundle bundle) {
     }
@@ -57,6 +62,7 @@ public class AppLifecycleHelper implements Application.ActivityLifecycleCallback
         if (mActivityCnt == 1) {
             notifyAppVisibilityListeners(true);
         }
+        mForegroundActivity = activity;
     }
 
     @Override
@@ -72,6 +78,7 @@ public class AppLifecycleHelper implements Application.ActivityLifecycleCallback
         mActivityCnt--;
         if (mActivityCnt == 0) {
             notifyAppVisibilityListeners(false);
+            mForegroundActivity = null;
         }
     }
 
