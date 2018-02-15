@@ -3,15 +3,25 @@ package com.umobilized.helpers.managers;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Environment;
 import android.security.KeyPairGeneratorSpec;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 import android.support.annotation.RequiresApi;
 import android.util.Base64;
 
+import com.umobilized.helpers.utils.FileUtils;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.Key;
@@ -23,7 +33,11 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
@@ -42,16 +56,20 @@ import javax.security.auth.x500.X500Principal;
  */
 
 public class SecretManager {
+    private static final String SECRET_FILES_DIR = "secret_files";
 
     private static final String SHARED_PREF_KEY = "com.umobilzied.helpers.secret_key";
     private static final String SHARED_PREF_SECRETS = "com.umobilzied.helpers.secret_store";
+    private static final String SHARED_PREF_FILES = "com.umobilzied.helpers.secret_files";
 
     private static final String KEY_ENCRYPTED_KEY = "key";
-
     private static final String RSA_MODE =  "RSA/ECB/PKCS1Padding";
     private static final String AES_MODE = "AES/ECB/PKCS7Padding";
     private static final String KEY_ALIAS =  "MASTER";
+
     private static final String ANDROID_KEY_STORE = "AndroidKeyStore";
+
+    private static final int BUFFER_SIZE = 1024;
 
     private static SecretManager sInstance;
 
@@ -114,12 +132,104 @@ public class SecretManager {
         return context.getSharedPreferences(SHARED_PREF_SECRETS, Context.MODE_PRIVATE).contains(key);
     }
 
+    public Set<String> getSecretEntryKeys(Context context) {
+        return context.getSharedPreferences(SHARED_PREF_SECRETS, Context.MODE_PRIVATE).getAll().keySet();
+    }
+
+    /**
+     * Stores encrypted version of file in the device storage.
+     * Make sure to disposed plain file after encryption is done.
+     * @param context
+     * @param value
+     * @throws Exception
+     */
+    public void storeFileSecret(Context context, String key, File value) throws Exception {
+        BufferedOutputStream outputStream = null;
+        BufferedInputStream inputStream = null;
+        try {
+            File dir = new File(context.getFilesDir(), SECRET_FILES_DIR);
+            if (!dir.exists()) dir.mkdir();
+
+            File out = new File(dir, UUID.randomUUID().toString());
+            outputStream = new BufferedOutputStream(new FileOutputStream(out));
+
+            outputStream.write(encryptToBytes(context, FileUtils.readBytes(value)));
+
+            context.getSharedPreferences(SHARED_PREF_FILES, Context.MODE_PRIVATE)
+                    .edit()
+                    .putString(key, out.getAbsolutePath())
+                    .apply();
+
+        } catch (IOException e) {
+            throw e;
+        } finally {
+            FileUtils.closeQuietly(inputStream);
+            FileUtils.closeQuietly(outputStream);
+        }
+    }
+
+    public File getFileSecret(Context context, String filenameKey, boolean deleteSecret) throws Exception {
+        BufferedOutputStream outputStream = null;
+        BufferedInputStream inputStream = null;
+
+        SharedPreferences pref = context.getSharedPreferences(SHARED_PREF_FILES, Context.MODE_PRIVATE);
+        File secretFile;
+        try {
+            if (pref.contains(filenameKey) && (secretFile = new File(pref.getString(filenameKey, ""))).exists()) {
+                File out = FileUtils.getInternalCacheFile(context, SECRET_FILES_DIR, filenameKey);
+                outputStream = new BufferedOutputStream(new FileOutputStream(out));
+
+                outputStream.write(decrypt(context, FileUtils.readBytes(secretFile)));
+
+                if (deleteSecret) {
+                    secretFile.delete();
+                    pref.edit().remove(filenameKey).apply();
+                }
+
+                return out;
+            }
+        } catch (IOException e) {
+            throw e;
+        } finally {
+            FileUtils.closeQuietly(inputStream);
+            FileUtils.closeQuietly(outputStream);
+        }
+        return null;
+    }
+
+    public void removeFileSecret(Context context, String key) {
+        SharedPreferences pref = context.getSharedPreferences(SHARED_PREF_FILES, Context.MODE_PRIVATE);
+
+        File secretFile;
+        if (pref.contains(key)) {
+            secretFile = new File(pref.getString(key, ""));
+            if (secretFile.exists()) {
+                secretFile.delete();
+            }
+            pref.edit().remove(key).apply();
+        }
+    }
+
+    public boolean hasFileSecret(Context context, String filenameKey) {
+        SharedPreferences pref = context.getSharedPreferences(SHARED_PREF_FILES, Context.MODE_PRIVATE);
+        return pref.contains(filenameKey) && (new File(pref.getString(filenameKey, ""))).exists();
+    }
+
+    public Set<String> getSecretFileEntryKeys(Context context) {
+        return context.getSharedPreferences(SHARED_PREF_FILES, Context.MODE_PRIVATE).getAll().keySet();
+    }
 
     public String encrypt(Context context, byte[] input) throws Exception {
         Cipher c = Cipher.getInstance(AES_MODE, "BC");
         c.init(Cipher.ENCRYPT_MODE, getSecretKey(context, KEY_ALIAS));
         byte[] encodedBytes = c.doFinal(input);
         return Base64.encodeToString(encodedBytes, Base64.DEFAULT);
+    }
+
+    public byte[] encryptToBytes(Context context, byte[] input) throws Exception {
+        Cipher c = Cipher.getInstance(AES_MODE, "BC");
+        c.init(Cipher.ENCRYPT_MODE, getSecretKey(context, KEY_ALIAS));
+        return c.doFinal(input);
     }
 
 
@@ -221,5 +331,4 @@ public class SecretManager {
         byte[] key = rsaDecrypt(encryptedKey, alias);
         return new SecretKeySpec(key, "AES");
     }
-
 }
