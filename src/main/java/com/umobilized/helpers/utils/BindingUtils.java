@@ -2,6 +2,7 @@ package com.umobilized.helpers.utils;
 
 import android.databinding.BindingAdapter;
 import android.graphics.Typeface;
+import android.support.design.widget.TextInputLayout;
 import android.text.Html;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,6 +19,14 @@ public class BindingUtils {
             textView.setText(Html.fromHtml(html));
         }
     }
+
+    @BindingAdapter("bind:error")
+    public static void setError(TextInputLayout layout, String error) {
+        if (layout.isErrorEnabled()) {
+            layout.setError(error);
+        }
+    }
+
 
     @BindingAdapter("onAction")
     public static void setOnEditorActionListener(EditText editText, TextView.OnEditorActionListener listener) {
