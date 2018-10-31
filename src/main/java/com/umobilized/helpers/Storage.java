@@ -33,22 +33,33 @@ import java.lang.reflect.Type;
 
 public class Storage {
 
-    private static final String PREFERENCES_FILE = "com.umobilized.helpers.storage";
+    private static final String DEFAULT_PREFERENCES_FILE = "com.umobilized.helpers.storage";
     private static final String CACHE_SUBDIRECTORY = "storage";
 
-    private Context mContext;
-    private Gson mGson;
+    private final Context mContext;
+    private final Gson mGson;
+    private final String mPrefFileName;
 
     public Storage(Context context) {
         mContext = context;
+        mPrefFileName = DEFAULT_PREFERENCES_FILE;
+        mGson = buildGson();
+    }
 
-        mGson = new GsonBuilder()
+    public Storage(Context context, String prefFileName) {
+        mContext = context;
+        mPrefFileName = prefFileName;
+        mGson = buildGson();
+    }
+
+    private Gson buildGson() {
+        return new GsonBuilder()
                 .registerTypeAdapter(Uri.class, new UriSerializerDeserialzier())
                 .create();
     }
 
     public SharedPreferences getPrefs() {
-        return mContext.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
+        return mContext.getSharedPreferences(mPrefFileName, Context.MODE_PRIVATE);
     }
 
     public void storeObjectAsJson(String key, Object object) {
