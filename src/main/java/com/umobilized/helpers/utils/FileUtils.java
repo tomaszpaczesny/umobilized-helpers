@@ -149,6 +149,52 @@ public class FileUtils {
         return image;
     }
 
+    public static boolean copy(File src, File dst) {
+        if (src == null || dst == null) return false;
+
+        InputStream in = null;
+        OutputStream out = null;
+        try {
+            in = new FileInputStream(src);
+            out = new FileOutputStream(dst);
+            // Transfer bytes from in to out
+            byte[] buf = new byte[1024*8];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            return true;
+        }
+        catch (IOException e) {
+            return false;
+        } finally {
+            closeQuietly(in);
+            closeQuietly(out);
+        }
+    }
+
+    public static boolean copy(InputStream in, File dst) {
+        if (in == null || dst == null) return false;
+
+        OutputStream out = null;
+        try {
+            out = new FileOutputStream(dst);
+            // Transfer bytes from in to out
+            byte[] buf = new byte[1024*8];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            return true;
+        }
+        catch (IOException e) {
+            return false;
+        } finally {
+            closeQuietly(in);
+            closeQuietly(out);
+        }
+    }
+
     private static File getCacheDir(Context context) {
         File cacheDir;
 
@@ -161,6 +207,15 @@ public class FileUtils {
         }
 
         return cacheDir;
+    }
+
+    public static String getFileExtension(File file) {
+        String name = file.getName();
+        int lastIndexOf = name.lastIndexOf(".");
+        if (lastIndexOf == -1) {
+            return ""; // empty extension
+        }
+        return name.substring(lastIndexOf);
     }
 
     public static void closeQuietly(InputStream stream) {

@@ -37,6 +37,26 @@ public class ExternalAppUtils {
     }
 
     /**
+     * Opens given local file in external activity.
+     * @param file
+     *  @return true if activity started
+     */
+    public static boolean externalFile(Context context, File file, String typeHint) {
+        // TODO: for Android 7
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.fromFile(file));
+        if (typeHint != null && !typeHint.isEmpty()) {
+            intent.setType(typeHint);
+        }
+
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
+            context.startActivity(intent);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Opens email client with prefilled address and subject
      * @param context
      * @param emailTo
