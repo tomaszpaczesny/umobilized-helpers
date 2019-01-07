@@ -26,27 +26,21 @@ public class ExternalAppUtils {
         if (!url.startsWith("http://") && !url.startsWith("https://"))
             url = "http://" + url;
 
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-
-        if (intent.resolveActivity(context.getPackageManager()) != null) {
-            context.startActivity(intent);
-            return true;
-        } else {
-            return false;
-        }
+        return externalUri(context, Uri.parse(url), null);
     }
 
     /**
-     * Opens given local file in external activity.
-     * @param file
+     * Opens given URI in external activity.
+     * @param uri
+     * @param typeHint
      *  @return true if activity started
      */
-    public static boolean externalFile(Context context, File file, String typeHint) {
-        // TODO: for Android 7
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.fromFile(file));
-        if (typeHint != null && !typeHint.isEmpty()) {
-            intent.setType(typeHint);
+    public static boolean externalUri(Context context, Uri uri, String typeHint) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        if (typeHint != null) {
+            intent.setDataAndType(uri, typeHint);
         }
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         if (intent.resolveActivity(context.getPackageManager()) != null) {
             context.startActivity(intent);

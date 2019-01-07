@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.support.v4.content.ContextCompat;
+import android.webkit.MimeTypeMap;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -87,8 +88,8 @@ public class FileUtils {
         return false;
     }
 
-    public static File getCacheFile(Context context, String subDirectoryName, String fileName) {
-        File cacheDir = getCacheDir(context);
+    public static File getCacheFile(Context context, String subDirectoryName, String fileName, boolean preferExternal) {
+        File cacheDir = getCacheDir(context, preferExternal);
 
         File subDirectory = new File(cacheDir, subDirectoryName);
         subDirectory.mkdir(); // creates if needed
@@ -97,16 +98,11 @@ public class FileUtils {
     }
 
     public static File getInternalCacheFile(Context context, String subDirectoryName, String fileName) {
-        File cacheDir = context.getCacheDir();
-
-        File subDirectory = new File(cacheDir, subDirectoryName);
-        subDirectory.mkdir(); // creates if needed
-
-        return new File(subDirectory, fileName);
+        return getCacheFile(context, subDirectoryName, fileName, false);
     }
 
-    public static File[] getAllCacheFiles(Context context, String subDirectoryName) {
-        File cacheDir = getCacheDir(context);
+    public static File[] getAllCacheFiles(Context context, String subDirectoryName, boolean preferExternal) {
+        File cacheDir = getCacheDir(context, preferExternal);
         File subDirectory = new File(cacheDir, subDirectoryName);
         if (subDirectory.exists()) {
             return subDirectory.listFiles();
@@ -115,8 +111,8 @@ public class FileUtils {
         }
     }
 
-    public static void emptyDirectory(Context context, String subDirectoryName) {
-        File[] files = FileUtils.getAllCacheFiles(context, subDirectoryName);
+    public static void emptyCacheDirectory(Context context, String subDirectoryName, boolean preferExternal) {
+        File[] files = FileUtils.getAllCacheFiles(context, subDirectoryName, preferExternal);
         for (File file : files) {
             file.delete();
         }
@@ -138,7 +134,7 @@ public class FileUtils {
         if (inPublicDir) {
             storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         } else {
-            storageDir = getCacheDir(context);
+            storageDir = getCacheDir(context, true);
         }
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
@@ -195,12 +191,12 @@ public class FileUtils {
         }
     }
 
-    private static File getCacheDir(Context context) {
+    private static File getCacheDir(Context context, boolean preferExternal) {
         File cacheDir;
 
 
         File[] externalCacheDirs = ContextCompat.getExternalCacheDirs(context);
-        if (externalCacheDirs != null && externalCacheDirs.length > 0 && externalCacheDirs[0] != null) {
+        if (preferExternal && externalCacheDirs != null && externalCacheDirs.length > 0 && externalCacheDirs[0] != null) {
             cacheDir = externalCacheDirs[0];
         } else {
             cacheDir = context.getCacheDir();
@@ -212,10 +208,15 @@ public class FileUtils {
     public static String getFileExtension(File file) {
         String name = file.getName();
         int lastIndexOf = name.lastIndexOf(".");
-        if (lastIndexOf == -1) {
+        if (lastIndexOf == -1 || lastIndexOf == name.length()-1) {
             return ""; // empty extension
         }
-        return name.substring(lastIndexOf);
+        return name.substring(lastIndexOf+1);
+    }
+
+    public static String getFileMimeType(File file, String fallbackMimeType) {
+        String type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(getFileExtension(file));
+        return type != null ? type : fallbackMimeType;
     }
 
     public static void closeQuietly(InputStream stream) {

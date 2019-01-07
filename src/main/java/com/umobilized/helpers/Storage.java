@@ -94,7 +94,7 @@ public class Storage {
 
 
     public void storeObjectAsFile(String key, Serializable object) {
-        File file = FileUtils.getCacheFile(mContext, CACHE_SUBDIRECTORY, key);
+        File file = FileUtils.getInternalCacheFile(mContext, CACHE_SUBDIRECTORY, key);
 
         ObjectOutputStream oos = null;
 
@@ -109,7 +109,7 @@ public class Storage {
     }
 
     public <T extends Serializable> T  getObjectFromFile(String key) {
-        File file = FileUtils.getCacheFile(mContext, CACHE_SUBDIRECTORY, key);
+        File file = FileUtils.getInternalCacheFile(mContext, CACHE_SUBDIRECTORY, key);
 
         ObjectInputStream ois = null;
 
