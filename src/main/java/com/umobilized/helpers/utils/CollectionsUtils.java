@@ -19,8 +19,9 @@ public class CollectionsUtils {
                     toRemove.add(item);
                 }
             }
+
+            collection.removeAll(toRemove);
         }
-        collection.removeAll(toRemove);
         return toRemove;
     }
 
