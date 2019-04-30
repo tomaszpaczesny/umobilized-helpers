@@ -13,9 +13,11 @@ public class CollectionsUtils {
     public static <T> ArrayList<T> removeIf(Collection<T> collection, Predicate<T> predicate) {
         ArrayList<T> toRemove = new ArrayList<>();
 
-        for (T item : collection) {
-            if (predicate.test(item)) {
-                toRemove.add(item);
+        if (collection != null) {
+            for (T item : collection) {
+                if (predicate.test(item)) {
+                    toRemove.add(item);
+                }
             }
         }
         collection.removeAll(toRemove);
@@ -25,15 +27,21 @@ public class CollectionsUtils {
     public static <T> List<T> subListIf(Collection<T> collection, Predicate<T> predicate) {
         ArrayList<T> subList = new ArrayList<>();
 
-        for (T item : collection) {
-            if (predicate.test(item)) {
-                subList.add(item);
+        if (collection != null) {
+            for (T item : collection) {
+                if (predicate.test(item)) {
+                    subList.add(item);
+                }
             }
         }
+
         return subList;
     }
 
     public static <T> T findFirstIf(Collection<T> collection, Predicate<T> predicate) {
+        if (collection == null) {
+            return null;
+        }
         for (T item : collection) {
             if (predicate.test(item)) {
                 return item;
@@ -43,6 +51,9 @@ public class CollectionsUtils {
     }
 
     public static <T> T findMin(Collection<T> collection, Value<T> valuator) {
+        if (collection == null) {
+            return null;
+        }
         T minItem = null;
         for (T item : collection) {
             if (minItem == null) {
@@ -57,6 +68,9 @@ public class CollectionsUtils {
     }
 
     public static <T> T findMax(Collection<T> collection, Value<T> valuator) {
+        if (collection == null) {
+            return null;
+        }
         T maxItem = null;
         for (T item : collection) {
             if (maxItem == null) {
@@ -71,6 +85,9 @@ public class CollectionsUtils {
     }
 
     public static <T,P, RESULT extends Collection<P>> RESULT map(Collection<T> collection, RESULT resultColleciton, Mapper<T,P> mapper)  {
+        if (collection == null) {
+            return null;
+        }
         for (T item : collection) {
             resultColleciton.add(mapper.map(item));
         }
