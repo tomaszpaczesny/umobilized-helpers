@@ -1,11 +1,12 @@
 package com.umobilized.helpers.utils;
 
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 import android.graphics.Typeface;
-import android.support.design.widget.TextInputLayout;
 import android.text.Html;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.google.android.material.textfield.TextInputLayout;
 
 /**
  * Created by tpaczesny on 2017-04-07.

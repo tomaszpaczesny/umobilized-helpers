@@ -2,10 +2,11 @@ package com.umobilized.helpers.app;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+
+import androidx.fragment.app.DialogFragment;
 
 import com.umobilized.helpers.PermissionsSet;
 

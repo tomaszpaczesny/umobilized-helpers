@@ -1,8 +1,9 @@
 package com.umobilized.helpers.views.widgets.contextlayouts;
 
 import android.content.Context;
-import android.databinding.BindingAdapter;
-import android.support.v7.widget.CardView;
+
+import androidx.cardview.widget.CardView;
+import androidx.databinding.BindingAdapter;
 import android.util.AttributeSet;
 import android.view.ContextMenu;
 

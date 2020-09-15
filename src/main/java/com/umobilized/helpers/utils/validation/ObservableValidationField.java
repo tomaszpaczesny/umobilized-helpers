@@ -1,9 +1,8 @@
 package com.umobilized.helpers.utils.validation;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-import android.databinding.Observable;
-import android.databinding.ObservableField;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.Observable;
 
 import com.umobilized.helpers.BR;
 

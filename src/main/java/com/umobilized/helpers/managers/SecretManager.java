@@ -7,8 +7,9 @@ import android.os.Environment;
 import android.security.KeyPairGeneratorSpec;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
-import android.support.annotation.RequiresApi;
 import android.util.Base64;
+
+import androidx.annotation.RequiresApi;
 
 import com.umobilized.helpers.utils.FileUtils;
 

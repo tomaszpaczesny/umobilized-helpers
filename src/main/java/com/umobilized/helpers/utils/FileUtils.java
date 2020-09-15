@@ -3,7 +3,7 @@ package com.umobilized.helpers.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.webkit.MimeTypeMap;
 
 import java.io.BufferedInputStream;

@@ -1,9 +1,8 @@
 package com.umobilized.helpers.views.widgets;
 
 import android.content.Context;
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;

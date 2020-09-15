@@ -1,7 +1,7 @@
 package com.umobilized.helpers.views.widgets.contextlayouts;
 
 import android.content.Context;
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 import android.util.AttributeSet;
 import android.view.ContextMenu;
 import android.widget.LinearLayout;

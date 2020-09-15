@@ -1,7 +1,7 @@
 package com.umobilized.helpers.views.adapters;
 
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
