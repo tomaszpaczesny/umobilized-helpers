@@ -1,7 +1,7 @@
 package com.umobilized.helpers.views.adapters;
 
-import android.databinding.ViewDataBinding;
-import android.support.v7.widget.RecyclerView;
+import androidx.databinding.ViewDataBinding;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by tpaczesny on 2017-05-11.

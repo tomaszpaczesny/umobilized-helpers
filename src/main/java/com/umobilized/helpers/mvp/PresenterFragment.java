@@ -1,7 +1,8 @@
 package com.umobilized.helpers.mvp;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import com.umobilized.helpers.app.HelperFragment;
 

@@ -3,11 +3,12 @@ package com.umobilized.helpers.views;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.support.v7.widget.AppCompatSpinner;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+
+import androidx.appcompat.widget.AppCompatSpinner;
 
 import java.util.Arrays;
 import java.util.List;
@@ -49,17 +50,14 @@ public class HintSpinner extends AppCompatSpinner {
         TypedArray typedArray = context.getResources().obtainAttributes(attrs, new int[]{android.R.attr.entries});
         CharSequence[] optionsArray = typedArray.getTextArray(0);
         typedArray.recycle();
-        HintAdapter adapter = new HintAdapter(context, Arrays.asList(optionsArray), android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item);
-        adapter.setDropDownViewResource(android.support.v7.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        HintAdapter adapter = new HintAdapter(context, Arrays.asList(optionsArray), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
         setAdapter(adapter);
         setNoSelection();
 
         setFocusable(true);
         setFocusableInTouchMode(true);
     }
-
-
-
 
     @Override
     public int getSelectedItemPosition() {

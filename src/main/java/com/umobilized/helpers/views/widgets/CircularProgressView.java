@@ -22,7 +22,7 @@ import com.umobilized.helpers.R;
  * Created by tpaczesny on 2016-12-09.
  */
 
-public class CircularProgressView extends android.support.v7.widget.AppCompatImageView {
+public class CircularProgressView extends androidx.appcompat.widget.AppCompatImageView {
     private Paint mPaint;
     private RectF mBounds;
     private long mMaxProgress;
